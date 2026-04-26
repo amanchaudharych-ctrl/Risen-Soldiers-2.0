@@ -1,4 +1,4 @@
-name: Build APK
+name: Rise Soldiers APK Build
 
 on:
   push:
@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout repo
         uses: actions/checkout@v4
 
       - name: Setup Flutter
@@ -18,8 +18,14 @@ jobs:
         with:
           flutter-version: stable
 
-      - name: Create Flutter App
-        run: flutter create .
+      - name: Create Flutter project
+        run: flutter create rise_app
+
+      - name: Move project files
+        run: |
+          cp -r rise_app/* .
+          cp -r rise_app/.* . 2>/dev/null || true
+          rm -rf rise_app
 
       - name: Get dependencies
         run: flutter pub get
@@ -30,5 +36,5 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: app
+          name: rise-soldiers-apk
           path: build/app/outputs/flutter-apk/app-release.apk
